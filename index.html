@@ -3,38 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Android Share Button</title>
+    <title>Mobile Web Video Share Button</title>
     <style>
         /* Add your styling here if needed */
     </style>
 </head>
 <body>
 
+<!-- Video element -->
+<video controls width="300" height="200" poster="video-poster.jpg">
+    <source src="your-video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
 <!-- Share button -->
-<button id="shareButton">Share on Android</button>
+<button id="shareButton">Share Video</button>
 
 <script>
     document.getElementById('shareButton').addEventListener('click', () => {
-        // Check if it's an Android device
-        if (/Android/i.test(navigator.userAgent)) {
-            // Open the Android share sheet using the Web Share API
-            try {
-                const shareData = {
-                    title: 'Your shared title',
-                    text: 'Your shared text',
-                    url: 'https://yourwebsite.com',
-                };
-
-                navigator.share(shareData)
-                    .then(() => console.log('Successful share'))
-                    .catch((error) => console.log('Error sharing:', error));
-            } catch (error) {
-                // Handle errors or fallback if the Web Share API is not supported
-                alert('Error sharing or Web Share API not supported. Please manually share the page.');
-            }
+        // Check if the Web Share API is supported
+        if (navigator.share) {
+            // Use Web Share API for modern browsers
+            navigator.share({
+                title: 'Your video title',
+                text: 'Check out this video!',
+                url: window.location.href,
+            })
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing:', error));
         } else {
-            // Display a message for non-Android users
-            alert('This feature is available only on Android.');
+            // Fallback for browsers that do not support Web Share API
+            alert('Web Share API not supported. Please manually share the video.');
         }
     });
 </script>
